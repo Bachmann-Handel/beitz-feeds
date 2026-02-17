@@ -1,0 +1,28 @@
+name: Update Feed
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - run: pip install requests
+
+    - run: python generate_feed.py
+
+    - run: |
+        git config user.name "feedbot"
+        git config user.email "bot@github.com"
+        git add idealo.csv
+        git commit -m "update feed" || exit 0
+        git push
