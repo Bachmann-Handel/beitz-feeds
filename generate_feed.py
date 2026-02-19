@@ -120,12 +120,12 @@ for row in rows:
         if looks_too_short(row.get("description", "")):
             row["description"] = BS3000_DESC
 
-# --- Output schreiben (korrekte Quotes bei Zeilenumbrüchen in description)
-with open(OUT_FEED, "w", encoding="utf-8", newline="") as f:
+# --- Output schreiben (Excel-kompatibel: UTF-8 mit BOM + Semikolon)
+with open(OUT_FEED, "w", encoding="utf-8-sig", newline="") as f:
     writer = csv.DictWriter(
         f,
         fieldnames=fieldnames,
-        delimiter=";",
+        delimiter=";",          # Deutschland/Excel
         quotechar='"',
         quoting=csv.QUOTE_MINIMAL
     )
